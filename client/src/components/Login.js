@@ -30,7 +30,7 @@ const Login = () => {
         
         <br/><br/><br/><br/>
         <div className="row ">
-        <form className="col-sm-6 p-4 mx-auto border ">
+        <form className=" col-10 col-sm-6 p-4 mx-auto border ">
             <div className="form-group">
                 <label htmlFor="email">Email address</label>
                 <input onChange={newInput} name="email" value={input.email} type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
@@ -48,7 +48,7 @@ const Login = () => {
             </div></>:<>
             <br/><br/><br/><br/>
             <div className="row ">
-            <form className="col-sm-6 p-4 mx-auto border ">
+            <form className="col-10 col-sm-6 p-4 mx-auto border ">
             <div className="form-group">
                 <label htmlFor="name">Your Name</label>
                 <input onChange={newSignUpInput} name="name" value={SignUpInput.name} type="name" className="form-control"  aria-describedby="emailHelp" placeholder="Enter email"/>
