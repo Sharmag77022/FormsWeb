@@ -17,7 +17,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: { 
-        secure:true,
+        secure:false,
         maxAge:1000*60*60
     }
   }))
@@ -25,6 +25,9 @@ app.use('/user',userRoute);
 
 app.get('/',(req,res)=>{
     res.send('hello');
+})
+app.get('/hello',(req,res)=>{
+    res.send('hello sanjeev');
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

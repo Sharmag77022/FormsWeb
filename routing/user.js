@@ -35,6 +35,7 @@ router.post('/login',userAuthentication,(req,res)=>{
 })
 router.get('/logout', function (req, res) {
     req.session.destroy();
+    res.clearCookie('connect.sid');
     res.send("logout success!");
   });
 module.exports= router;
