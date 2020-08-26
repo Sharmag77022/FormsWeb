@@ -1,14 +1,30 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const app = express();
 const dbConnection = require('./models/connection');
 const userRoute = require('./routing/user');
-
-const app = express();
+var session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const port = process.env.PORT || 5000;
+const mongoose = require('mongoose');
 dbConnection();
-app.use('/user',userRoute);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+mongoose.connect('mongodb://localhost/formApp',{useNewUrlParser: true,useUnifiedTopology: true});
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: 'aDemoSecret',
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    resave: false,
+    saveUninitialized: true,
+    cookie: { 
+        secure:true,
+        maxAge:1000*60*60
+    }
+  }))
+app.use('/user',userRoute);
+
+app.get('/',(req,res)=>{
+    res.send('hello');
+})
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
