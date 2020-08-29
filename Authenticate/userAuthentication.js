@@ -6,14 +6,14 @@ const userAuthentication = async (req,res,next)=>{
         return data;
     })
     if(user===null){
-        res.json({failed:'No User Found'})
+        res.status(401).json({msg:'No User Found'})
     }else{
         bcrypt.compare(req.body.password,user.password, function(err, result) {
             if(result){
                 req.body.user = user;
                 next();
             }else{
-                res.json({failed:'Password Is Incorrect'})
+                res.status(401).json({msg:'Password Is Incorrect'})
             }
         });
     }
