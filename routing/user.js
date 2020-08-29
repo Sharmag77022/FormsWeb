@@ -43,4 +43,12 @@ router.get('/hello',userAuthorization,(req,res)=>{
     console.log(req.userId);
     res.send('hello Sanju')
 })  
+router.get('/loginStatus',(req,res)=>{
+    if(req.session.user){
+        res.json({status:true});
+    }
+    else{
+        res.json({status:false});
+    }
+})
 module.exports= router;
