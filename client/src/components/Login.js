@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState , useContext } from 'react';
 import './css/loginForm.css';
 import {  useHistory } from "react-router-dom";
 import {  toast } from 'react-toastify';
+import { onLogout } from '../App';
 
-const Login = () => {
-    const [login,setLogin]= useState(true);
-
+const Login = (props) => {
+    const [login,setLogin]= useState(props.status);
     const [input,setInput] = useState({email:'',password:''});
     const history = useHistory();
-
+    const changeLoginStatus = useContext(onLogout);
     const [SignUpInput,setSignUpInput]= useState({name:'',email:'',password:''});
+  
 
     const loginToggle = ()=>{setLogin(!login)};
     
@@ -30,6 +31,7 @@ const Login = () => {
         }).then((res)=>{
             res.json().then(data=>{
                 if(res.status===200){
+                    changeLoginStatus();
                     toast.success(data.msg, {
                         position: "top-right",
                         autoClose: 3000,
@@ -39,6 +41,7 @@ const Login = () => {
                         draggable: true,
                         progress: undefined,
                         }); 
+
                         history.push("/about");           
                 }else{
                     toast.error(data.msg, {
