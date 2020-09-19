@@ -1,4 +1,7 @@
 import React, { useState, useContext } from 'react';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import { onLogout } from '../App';
 import {  toast } from 'react-toastify';
 import {
@@ -47,12 +50,12 @@ const Menu = (props) => {
                 <NavLink tag={Link} to="/about">About Us</NavLink>
             </NavItem>
             <NavItem>
-             {props.userStatus?<NavLink tag={Link} to="/createForm">createForm</NavLink>
+             {props.userStatus?<NavLink tag={Link} to="/createForm"><PlaylistAddIcon/>&nbsp;createForm</NavLink>
              :null} 
             </NavItem>
             <NavItem>
-             {props.userStatus?<NavLink href="#"  onClick={logout}>LogOut</NavLink>
-             :<NavLink tag={Link} to="/logIn">LogIn</NavLink>} 
+             {props.userStatus?<NavLink href="#"  onClick={logout}><ExitToAppIcon/>&nbsp;LogOut</NavLink>
+             :<NavLink tag={Link} to="/logIn"><PowerSettingsNewIcon/>&nbsp;LogIn</NavLink>} 
             </NavItem>
             
           </Nav>

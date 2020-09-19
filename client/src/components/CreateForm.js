@@ -4,7 +4,6 @@ const CreateForm = ()=>{
     return(
         <>
             <CreateQuestion/>
-        
         </>
     )
 }
