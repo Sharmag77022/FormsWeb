@@ -41,10 +41,13 @@ const CreateF = ()=>{
     setQuestion(values);
   }
   
-  const addQ = ()=>{
-    //const values = [...questions];
-    //values.push({question:''});
-    setQuestion([...questions,{question:''}]);
+  const addQ = (index)=>{
+    const values = [...questions];
+    for(let i=values.length;i>index+1;i--){
+        values[i]=values[i-1];
+    }
+    values[index+1]={question:''}
+    setQuestion(values);
   }
   const deleteQ = (index)=>{
     const values = [...questions];
@@ -88,7 +91,7 @@ const CreateF = ()=>{
                 />
                 <Box display='flex' justifyContent="flex-end" >
                 <Tooltip title="Add Question">
-                        <IconButton aria-label="Add" onClick={addQ} >
+                        <IconButton aria-label="Add" onClick={event=>addQ(index)} >
                           <AddCircleOutlineIcon fontSize='large' color='primary' margin={5}/>
                         </IconButton>
                 </Tooltip>
