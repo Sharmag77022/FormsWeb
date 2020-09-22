@@ -73,6 +73,16 @@ const CreateF = ()=>{
             required
             />
             </CardContent>
+            <Box display='flex' justifyContent="flex-end" >
+                
+                <Box>
+                  <Tooltip title="Add Question">
+                      <IconButton aria-label="Add" onClick={event=>addQ(-1)} >
+                        <AddCircleOutlineIcon fontSize='large' color='primary' margin={5}/>
+                      </IconButton>
+                  </Tooltip>
+                </Box>
+                </Box >
           </Card>     
         </Grid>
         {/* question Section */}
@@ -90,12 +100,13 @@ const CreateF = ()=>{
                 required
                 />
                 <Box display='flex' justifyContent="flex-end" >
-                <Tooltip title="Add Question">
+                
+                  <Box>
+                    <Tooltip title="Add Question">
                         <IconButton aria-label="Add" onClick={event=>addQ(index)} >
                           <AddCircleOutlineIcon fontSize='large' color='primary' margin={5}/>
                         </IconButton>
-                </Tooltip>
-                  <Box>
+                    </Tooltip>
                   </Box>
                   <Box >
                   <Tooltip title="Delete">
