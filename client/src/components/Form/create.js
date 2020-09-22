@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Question from './Question';
 import './create.css';
 import {makeStyles} from  '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -7,8 +6,12 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import  Box from '@material-ui/core/Box'
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import Badge from '@material-ui/core/Badge';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -24,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
 
 
 const CreateF = ()=>{
+  const [title,setTitle]= useState('Untitled Form');
+  const newTitle = (event)=>{
+    setTitle(event.target.value);
+  }
     const classes = useStyles();
     return(<>
         <br/>
@@ -38,7 +45,8 @@ const CreateF = ()=>{
             label="Form Title"
             fullWidth
             margin="normal"
-            value="Untitled Form"
+            onChange={newTitle}
+            value={title}
             required
             />
             </CardContent>
@@ -49,7 +57,7 @@ const CreateF = ()=>{
         <Grid item xs={10} lg={6} className={classes.gridItem} >
         <Card className={classes.cardRoot} style={{boxShadow:'5px 5px 5px #888888'}} variant="outlined" >
             <CardContent>
-                <Typography variant='h5' color='primary'>Write a Question</Typography>
+                <Typography variant='h5' color='primary'>Write a Question</Typography>  
             <TextField
             label="Question"
             fullWidth
@@ -57,6 +65,25 @@ const CreateF = ()=>{
             
             required
             />
+            <Box display='flex' justifyContent="flex-end" >
+            <Tooltip title="Add Question">
+                    <IconButton aria-label="Add" disableFocusRipple={true}>
+                      <AddCircleOutlineIcon fontSize='large' color='primary' margin={5}/>
+                    </IconButton>
+                  </Tooltip>
+              <Box>
+                  
+              
+              </Box>
+              <Box >
+              <Tooltip title="Delete">
+                    <IconButton aria-label="delete">
+                     <DeleteOutlineIcon fontSize='large' color='secondary'/>
+                    </IconButton>
+              </Tooltip>
+                
+              </Box>
+            </Box>
             </CardContent>
           </Card>  
         </Grid>
