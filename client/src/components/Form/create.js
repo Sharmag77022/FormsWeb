@@ -31,6 +31,26 @@ const CreateF = ()=>{
   const newTitle = (event)=>{
     setTitle(event.target.value);
   }
+  const [questions,setQuestion]= useState([
+    {question:''}
+  ]);
+
+  const textChange=(key,event)=>{
+    const values = [...questions];
+    values[key].question = event.target.value;
+    setQuestion(values);
+  }
+  
+  const addQ = ()=>{
+    //const values = [...questions];
+    //values.push({question:''});
+    setQuestion([...questions,{question:''}]);
+  }
+  const deleteQ = (index)=>{
+    const values = [...questions];
+    values.splice(index,1);
+    setQuestion(values);
+  }
     const classes = useStyles();
     return(<>
         <br/>
@@ -53,40 +73,39 @@ const CreateF = ()=>{
           </Card>     
         </Grid>
         {/* question Section */}
-        
-        <Grid item xs={10} lg={6} className={classes.gridItem} >
-        <Card className={classes.cardRoot} style={{boxShadow:'5px 5px 5px #888888'}} variant="outlined" >
-            <CardContent>
-                <Typography variant='h5' color='primary'>Write a Question</Typography>  
-            <TextField
-            label="Question"
-            fullWidth
-            margin="normal"
-            
-            required
-            />
-            <Box display='flex' justifyContent="flex-end" >
-            <Tooltip title="Add Question">
-                    <IconButton aria-label="Add" disableFocusRipple={true}>
-                      <AddCircleOutlineIcon fontSize='large' color='primary' margin={5}/>
-                    </IconButton>
-                  </Tooltip>
-              <Box>
-                  
-              
-              </Box>
-              <Box >
-              <Tooltip title="Delete">
-                    <IconButton aria-label="delete">
-                     <DeleteOutlineIcon fontSize='large' color='secondary'/>
-                    </IconButton>
-              </Tooltip>
-                
-              </Box>
-            </Box>
-            </CardContent>
-          </Card>  
-        </Grid>
+        {questions.map((question,index)=>(
+            <Grid item xs={10} lg={6} className={classes.gridItem} key={index} >
+            <Card className={classes.cardRoot} style={{boxShadow:'5px 5px 5px #888888'}} variant="outlined" >
+                <CardContent>
+                    <Typography variant='h5' color='primary'>Write a Question</Typography>  
+                <TextField
+                label="Question"
+                fullWidth
+                margin="normal"
+                value={question.question}
+                onChange={event=>textChange(index,event)}
+                required
+                />
+                <Box display='flex' justifyContent="flex-end" >
+                <Tooltip title="Add Question">
+                        <IconButton aria-label="Add" onClick={addQ} >
+                          <AddCircleOutlineIcon fontSize='large' color='primary' margin={5}/>
+                        </IconButton>
+                </Tooltip>
+                  <Box>
+                  </Box>
+                  <Box >
+                  <Tooltip title="Delete">
+                        <IconButton aria-label="delete" onClick={event=>deleteQ(index)}>
+                         <DeleteOutlineIcon fontSize='large' color='secondary'/>
+                        </IconButton>
+                  </Tooltip>  
+                  </Box>
+                </Box>
+                </CardContent>
+              </Card>  
+            </Grid>
+        ))}
       </Grid>
       </div>
     
