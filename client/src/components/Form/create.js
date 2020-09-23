@@ -11,6 +11,11 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,6 +27,13 @@ const useStyles = makeStyles((theme) => ({
     gridItem:{
       margin: theme.spacing(5)
     },
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    }
          
   }));
 
@@ -32,12 +44,18 @@ const CreateF = ()=>{
     setTitle(event.target.value);
   }
   const [questions,setQuestion]= useState([
-    {question:''}
+    {question:'',
+      type:1
+    }
   ]);
-
   const textChange=(key,event)=>{
     const values = [...questions];
     values[key].question = event.target.value;
+    setQuestion(values);
+  }
+  const typeChange=(key,event)=>{
+    const values = [...questions];
+    values[key].type = event.target.value;
     setQuestion(values);
   }
   
@@ -46,7 +64,7 @@ const CreateF = ()=>{
     for(let i=values.length;i>index+1;i--){
         values[i]=values[i-1];
     }
-    values[index+1]={question:''}
+    values[index+1]={question:'',type:1}
     setQuestion(values);
   }
   const deleteQ = (index)=>{
@@ -90,7 +108,24 @@ const CreateF = ()=>{
             <Grid item xs={10} lg={6} className={classes.gridItem} key={index} >
             <Card className={classes.cardRoot} style={{boxShadow:'5px 5px 5px #888888'}} variant="outlined" >
                 <CardContent>
-                    <Typography variant='h5' color='primary'>Write a Question</Typography>  
+                <Box display='flex' justifyContent="space-between">
+                <Box >
+                    <Typography variant='h5' color='primary'>Write a Question</Typography>
+                </Box>
+                <Box>
+                    <FormControl className={classes.formControl} variant="filled">
+                          <InputLabel >Type</InputLabel>
+                          <Select
+                            value={question.type}
+                            onChange={(event)=>typeChange(index,event)}
+                          >
+                            <MenuItem value={1}>Input Field</MenuItem>
+                            <MenuItem value={2}>Option</MenuItem>\
+                          </Select>
+                        </FormControl> 
+                </Box></Box>
+                    
+                       
                 <TextField
                 label="Question"
                 fullWidth
