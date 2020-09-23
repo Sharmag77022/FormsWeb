@@ -19,6 +19,10 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
+import ToggleOffIcon from '@material-ui/icons/ToggleOff';
+import ToggleOnIcon from '@material-ui/icons/ToggleOn';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -35,8 +39,10 @@ const useStyles = makeStyles((theme) => ({
     },
     selectEmpty: {
       marginTop: theme.spacing(2),
-    }
-         
+    },
+    button: {
+      margin: theme.spacing(1),
+    }    
   }));
 
 
@@ -48,7 +54,8 @@ const CreateF = ()=>{
   const [questions,setQuestion]= useState([
     {question:'',
       type:1,
-      options:[{option:'option1'}]
+      options:[{option:'option1'}],
+      required:false
     }
   ]);
   const opChange=(i,index,event)=>{
@@ -75,7 +82,13 @@ const CreateF = ()=>{
     for(let i=values.length;i>index+1;i--){
         values[i]=values[i-1];
     }
-    values[index+1]={question:'',type:1, options:[{option:'option1'}]}
+    values[index+1]={question:'',type:1, options:[{option:'option1'}],required:false}
+    setQuestion(values);
+  }
+  const toggleRequired= (index)=>{
+    const values=[...questions];
+    const currentState=values[index].required;
+    values[index].required= !currentState;
     setQuestion(values);
   }
   const addO = (i,index)=>{
@@ -85,7 +98,7 @@ const CreateF = ()=>{
     for(let k=opValues.length;k>i+1;k--){
       opValues[k]=opValues[k-1];
     }
-    opValues[i+1]={option:'New Option'};
+    opValues[i+1]={option:'newOption'};
     values[index].options= opValues;
     setQuestion(values);
   }
@@ -101,6 +114,10 @@ const CreateF = ()=>{
     opValues.splice(i,1);
     values[index].options= opValues;
     setQuestion(values);
+  }
+  const create= ()=>{
+      console.log(title);
+      console.log(questions);
   }
     const classes = useStyles();
     return(<>
@@ -171,8 +188,6 @@ const CreateF = ()=>{
                 <TextField
                 key={i} 
                 required 
-                 id="standard-required"
-                  label="Required"
                   InputProps={{
                     startAdornment: (
                       <InputAdornment>
@@ -215,13 +230,38 @@ const CreateF = ()=>{
                          <DeleteOutlineIcon fontSize='large' color='secondary'/>
                         </IconButton>
                   </Tooltip>  
-                  </Box></Box>
+                  </Box>
+                  <Box >
+                    {question.required?<Tooltip title="Compulsory">
+                        <IconButton aria-label="delete" onClick={event=>toggleRequired(index)}>
+                         <ToggleOnIcon fontSize='large' color='primary'/>
+                        </IconButton>
+                  </Tooltip>:<Tooltip title="Not Compulsory">
+                        <IconButton aria-label="enable required" onClick={event=>toggleRequired(index)}>
+                         <ToggleOffIcon label='sanjeev' fontSize='large' color='disabled'/>
+                        </IconButton>
+                  </Tooltip>}
+                    
+                  </Box>
+                  </Box>
                 </Box>
                 </CardContent>
               </Card>  
             </Grid>
         ))}
+         
       </Grid>
+      <Box display='flex' mb={5} justifyContent='center'>
+        <Button
+        variant="contained"
+        color="primary"
+        onClick={create}
+        className={classes.button}
+        endIcon={<Icon>send</Icon>}>
+          Create
+        </Button>
+      </Box>
+      
       </div>
     
     </>)
