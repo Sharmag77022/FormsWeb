@@ -16,7 +16,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import InputAdornment from "@material-ui/core/InputAdornment";
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -45,9 +48,18 @@ const CreateF = ()=>{
   }
   const [questions,setQuestion]= useState([
     {question:'',
-      type:1
+      type:1,
+      options:[{option:'option1'}]
     }
   ]);
+  const opChange=(i,index,event)=>{
+    const values = [...questions];
+    const options = values[index].options;
+    const opValues= [...options];
+    opValues[i].option= event.target.value;
+    values[index].options= opValues;
+    setQuestion(values);
+  }
   const textChange=(key,event)=>{
     const values = [...questions];
     values[key].question = event.target.value;
@@ -64,12 +76,31 @@ const CreateF = ()=>{
     for(let i=values.length;i>index+1;i--){
         values[i]=values[i-1];
     }
-    values[index+1]={question:'',type:1}
+    values[index+1]={question:'',type:1, options:[{option:'option1'}]}
+    setQuestion(values);
+  }
+  const addO = (i,index)=>{
+    const values = [...questions];
+    const options=values[index].options;
+    const opValues= [...options];
+    for(let k=opValues.length;k>i+1;k--){
+      opValues[k]=opValues[k-1];
+    }
+    opValues[i+1]={option:'New Option'};
+    values[index].options= opValues;
     setQuestion(values);
   }
   const deleteQ = (index)=>{
     const values = [...questions];
     values.splice(index,1);
+    setQuestion(values);
+  }
+  const removeO = (i,index)=>{
+    const values = [...questions];
+    const options=values[index].options;
+    const opValues= [...options];
+    opValues.splice(i,1);
+    values[index].options= opValues;
     setQuestion(values);
   }
     const classes = useStyles();
@@ -134,8 +165,42 @@ const CreateF = ()=>{
                 onChange={event=>textChange(index,event)}
                 required
                 />
-                <Box display='flex' justifyContent="flex-end" >
+                <Box display='flex' justifyContent="space-between" >
+                  <Box mt={1}>
+                 {(question.type==2)?
+                 question.options.map((option,i)=>(
+                <TextField
+                key={i} 
+                required 
+                 id="standard-required"
+                  label="Required"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment>
+                        <IconButton>
+                          <FiberManualRecordIcon fontSize='small' />
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                   , endAdornment: (
+                    <InputAdornment>
+                      <IconButton onClick={(event)=>addO(i,index)} >
+                        <AddIcon  />  
+                      </IconButton>
+                      <IconButton onClick={(event)=>removeO(i,index)}>
+                        <RemoveIcon /> 
+                      </IconButton>
+                    </InputAdornment>
+                  )
                 
+                  }}
+                   value={option.option}
+                   onChange={(event)=>opChange(i,index,event)}
+                    />
+                 ))
+                  :null
+                }</Box>
+                <Box display='flex'>
                   <Box>
                     <Tooltip title="Add Question">
                         <IconButton aria-label="Add" onClick={event=>addQ(index)} >
@@ -149,7 +214,7 @@ const CreateF = ()=>{
                          <DeleteOutlineIcon fontSize='large' color='secondary'/>
                         </IconButton>
                   </Tooltip>  
-                  </Box>
+                  </Box></Box>
                 </Box>
                 </CardContent>
               </Card>  
