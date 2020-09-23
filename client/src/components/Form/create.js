@@ -13,7 +13,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
@@ -150,8 +149,8 @@ const CreateF = ()=>{
                             value={question.type}
                             onChange={(event)=>typeChange(index,event)}
                           >
-                            <MenuItem value={1}>Input Field</MenuItem>
-                            <MenuItem value={2}>Option</MenuItem>\
+                            <MenuItem value={1}>Paragraph</MenuItem>
+                            <MenuItem value={2}>Multiple choice</MenuItem>\
                           </Select>
                         </FormControl> 
                 </Box></Box>
@@ -167,7 +166,7 @@ const CreateF = ()=>{
                 />
                 <Box display='flex' justifyContent="space-between" >
                   <Box mt={1}>
-                 {(question.type==2)?
+                 {(question.type===2)?
                  question.options.map((option,i)=>(
                 <TextField
                 key={i} 
@@ -177,19 +176,21 @@ const CreateF = ()=>{
                   InputProps={{
                     startAdornment: (
                       <InputAdornment>
-                        <IconButton>
-                          <FiberManualRecordIcon fontSize='small' />
-                        </IconButton>
+                          <FiberManualRecordIcon fontSize='small' color='primary'/>
                       </InputAdornment>
                     )
                    , endAdornment: (
                     <InputAdornment>
+                       <Tooltip title="Add an Option">
                       <IconButton onClick={(event)=>addO(i,index)} >
                         <AddIcon  />  
                       </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Remove Option">
                       <IconButton onClick={(event)=>removeO(i,index)}>
                         <RemoveIcon /> 
                       </IconButton>
+                      </Tooltip>
                     </InputAdornment>
                   )
                 
