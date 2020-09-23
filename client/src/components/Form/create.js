@@ -23,6 +23,7 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import ToggleOffIcon from '@material-ui/icons/ToggleOff';
 import ToggleOnIcon from '@material-ui/icons/ToggleOn';
+import { toast } from 'react-toastify';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -118,6 +119,73 @@ const CreateF = ()=>{
   const create= ()=>{
       console.log(title);
       console.log(questions);
+      let flag=true;
+      if(title===''){
+        flag=false;
+       toast.error('There must be a Title', {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        }); 
+      }
+      for(let x of questions){
+        if(x.question===''){
+          flag=false;
+          toast.error('One or more Questions are empty.', {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            }); 
+        }
+      }
+
+      if(flag){
+        fetch('/user/createForm',{
+          credentials: "same-origin",
+          method: 'POST',
+          headers:{
+              'Content-Type': 'application/json'
+          },
+          body:JSON.stringify({title:title,
+          questions:questions
+          })
+      }).then((res)=>{
+        res.json().then(data=>{
+          if(res.status===200){
+            toast.success(data.msg, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });           
+        }else{
+            toast.error(data.msg, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                })
+        }
+        }).catch((err)=>{
+          console.log(err);
+      })
+      })
+      }
+      
   }
     const classes = useStyles();
     return(<>

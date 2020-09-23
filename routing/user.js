@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userSchema = require('../models/userSchema');
+const formSchema = require('../models/formSchema');
 const bcrypt = require('bcrypt');
 const userAuthentication = require('../Authenticate/userAuthentication');
 const userAuthorization = require('../authorization/userAuthorization');
@@ -50,5 +51,17 @@ router.get('/loginStatus',(req,res)=>{
     else{
         res.json({status:false});
     }
+})
+//Form
+router.post('/createForm',userAuthorization,(req,res)=>{
+    const newForm = new formSchema({title:req.body.title,questions:req.body.questions,userId:req.userId});
+            newForm.save((err,Form)=>{
+                if(err){
+                    console.log(err);
+                    res.status(401).json({msg:'Form Creation Failed'});
+                }else{
+                    res.json({msg:'Form creation successful'})
+                }
+            })
 })
 module.exports= router;

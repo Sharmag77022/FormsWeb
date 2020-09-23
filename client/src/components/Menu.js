@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import {  useHistory } from "react-router-dom";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import { onLogout } from '../App';
 import {  toast } from 'react-toastify';
@@ -18,7 +19,9 @@ import { Link } from 'react-router-dom';
 
 const Menu = (props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const history = useHistory();
   const changeLoginStatus = useContext(onLogout );
+
   const toggle = () => setIsOpen(!isOpen);
   const logout = ()=>{
     fetch('/user/logout',{
@@ -36,6 +39,7 @@ const Menu = (props) => {
           draggable: true,
           progress: undefined,
           }); 
+          history.push("/about");
       })
     })
   }
