@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import About from './components/About';
 import Login from './components/Login';
 import CreateForm from './components/CreateForm';
+import MyForms from './components/Form/myForms';
 const onLogout = createContext();
 function App() {
  const [loginStatus,setloginStatus]= useState();
@@ -46,6 +47,9 @@ function App() {
       </Route>
       <Route path="/createForm">
         <CreateForm />
+      </Route>
+      <Route path="/myForms">
+        <MyForms />
       </Route>
      </Switch>
      </onLogout.Provider>

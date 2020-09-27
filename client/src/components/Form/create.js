@@ -210,8 +210,8 @@ const CreateF = ()=>{
                 
                 <Box>
                   <Tooltip title="Add Question">
-                      <IconButton aria-label="Add" onClick={event=>addQ(-1)} >
-                        <AddCircleOutlineIcon fontSize='large' color='primary' margin={5}/>
+                      <IconButton aria-label="Add"  onClick={event=>addQ(-1)} style={{outline:0}}>
+                          <AddCircleOutlineIcon fontSize='large' color='primary' margin={5}/>
                       </IconButton>
                   </Tooltip>
                 </Box>

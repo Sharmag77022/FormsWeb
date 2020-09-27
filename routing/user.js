@@ -64,4 +64,9 @@ router.post('/createForm',userAuthorization,(req,res)=>{
                 }
             })
 })
+//get forms
+router.get('/myForms',userAuthorization,async (req,res)=>{
+     const forms= await formSchema.find({userId:req.userId},'_id title');
+     res.json(forms);
+})
 module.exports= router;

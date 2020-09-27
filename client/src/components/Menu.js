@@ -5,6 +5,7 @@ import {  useHistory } from "react-router-dom";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import { onLogout } from '../App';
 import {  toast } from 'react-toastify';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import {
   Collapse,
   Navbar,
@@ -55,6 +56,10 @@ const Menu = (props) => {
             </NavItem>
             <NavItem>
              {props.userStatus?<NavLink tag={Link} to="/createForm"><PlaylistAddIcon/>&nbsp;createForm</NavLink>
+             :null} 
+            </NavItem>
+            <NavItem>
+             {props.userStatus?<NavLink tag={Link} to="/myForms"><AssignmentIcon/>&nbsp;MyForms</NavLink>
              :null} 
             </NavItem>
             <NavItem>
