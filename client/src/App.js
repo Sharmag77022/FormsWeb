@@ -2,6 +2,7 @@ import React, { useEffect, useState , createContext} from 'react';
 import './App.css';
 import Menu from "./components/Menu";
 import { Switch, Route } from 'react-router-dom';
+import FormFill from './components/FormFill';
 import About from './components/About';
 import Login from './components/Login';
 import CreateForm from './components/CreateForm';
@@ -38,6 +39,9 @@ function App() {
      <Switch>
      <Route path="/about">
             <About />
+      </Route>
+      <Route path="/formFill">
+            <FormFill />
       </Route>
       <Route path="/login">
           {loginStatus?<CreateForm />:<Login status={true} />} 

@@ -1,4 +1,4 @@
-import React, { useEffect }  from 'react';
+import React, { useState,useEffect }  from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -21,36 +21,46 @@ const useStyles = makeStyles((theme) => ({
   }  
 function MyForms(){    
     const classes = useStyles();
+    var [forms,setForms]=useState([])
    useEffect(()=>{
     fetch('/user/myForms',{
         method:'GET',
         credentials:'same-origin'
       }).then(res=>{
-       res.json().then(data=>{
-           console.log(data);
-       })
+        if(res.status===200){
+              res.json().then(async(data)=>{
+              //console.log(data);
+              setForms(data);
+              
+          })
+        }
+       
     }).catch(err=>{
         console.log(err);
     })
    },[]) 
+   console.log(forms);
     return(<>
     <br/>
-    <Box display='flex' justifyContent="center" className={classes.root}>
-     <Box>
+    <Box display='flex'  justifyContent="center" className={classes.root} style={{color:'blue',background:'gray'}}>
+     
      <div >
   
-      <List component="nav" aria-label="main mailbox folders" variant='outline'>
-      <ListItemLink href="/about" >
+      <List component="nav" aria-label="myForms" variant='outline' >
+      {forms.map((form,index)=>(
+        
+      <ListItem button  key={index} id={form._id} >
           <ListItemIcon>
             <FormatAlignCenterIcon />
           </ListItemIcon>
-          <ListItemText primary="Draj sdfkjsdjf sfdljdsk" />
-        </ListItemLink>
-        <Divider/>
+          <ListItemText primary={form.title} />
+        </ListItem>
+        
+        
+      ))}
       </List>
       
     </div>
-    </Box>
     </Box>
     
     </>)

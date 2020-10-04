@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const dbConnection = require('./models/connection');
 const userRoute = require('./routing/user');
+const formRoute = require('./routing/form');
 var session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const port = process.env.PORT || 5000;
@@ -25,12 +26,11 @@ app.use(session({
     }
   }))
 app.use('/user',userRoute);
+app.use('/form',formRoute);
 
 app.get('/',(req,res)=>{
     res.send('hello');
 })
-app.get('/hello',(req,res)=>{
-    res.send('hello sanjeev');
-})
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
