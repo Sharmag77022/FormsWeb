@@ -10,7 +10,7 @@ const Login = (props) => {
     const history = useHistory();
     const changeLoginStatus = useContext(onLogout);
     const [SignUpInput,setSignUpInput]= useState({name:'',email:'',password:''});
-  
+    
 
     const loginToggle = ()=>{setLogin(!login)};
     

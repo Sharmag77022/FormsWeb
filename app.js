@@ -27,10 +27,4 @@ app.use(session({
   }))
 app.use('/user',userRoute);
 app.use('/form',formRoute);
-
-app.get('/',(req,res)=>{
-    res.send('hello');
-})
-
-
 app.listen(port, () => console.log(`Listening on port ${port}`));

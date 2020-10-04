@@ -7,6 +7,7 @@ router.get('/',async(req,res)=>{
     const fId = req.query.fId;
     const formData= await formSchema.findById(fId).then(data=>{
         return data;
+    }).catch(err=>{
     });
     res.json(formData);
 })
