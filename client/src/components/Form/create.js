@@ -117,8 +117,6 @@ const CreateF = ()=>{
     setQuestion(values);
   }
   const create= ()=>{
-      console.log(title);
-      console.log(questions);
       let flag=true;
       if(title===''){
         flag=false;
