@@ -40,8 +40,7 @@ function App() {
      <Route path="/about">
             <About />
       </Route>
-      <Route path="/formFill/:fId" component={FormFill}>
-            
+      <Route path="/formFill/:fId" component={FormFill}>     
       </Route>
       <Route path="/login">
           {loginStatus?<CreateForm />:<Login status={true} />} 

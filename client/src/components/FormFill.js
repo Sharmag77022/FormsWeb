@@ -8,7 +8,10 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-
+import TextField from '@material-ui/core/TextField';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 275,
@@ -69,7 +72,18 @@ const FormFill =(props)=>{
             className={classes.question}
             align='center'
             />
-            <CardContent>   
+            <CardContent>
+                {question.type==1?
+                <TextField
+                label="Your Answer"
+                fullWidth
+                margin="normal"
+                // {question.required?'required':null}
+                />:<RadioGroup aria-label="Options" name="options" value={1} >
+                    {question.options.map((option,ind)=>(
+                        <FormControlLabel value={ind} control={<Radio />} label={option.option} key={ind} />
+                    ))}
+                 </RadioGroup>}   
             </CardContent>  
             </Card>
             </Grid>
