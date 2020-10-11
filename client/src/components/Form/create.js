@@ -56,7 +56,8 @@ const CreateF = ()=>{
     {question:'',
       type:1,
       options:[{option:'option1'}],
-      required:false
+      required:false,
+      answer:''
     }
   ]);
   const opChange=(i,index,event)=>{
@@ -83,7 +84,7 @@ const CreateF = ()=>{
     for(let i=values.length;i>index+1;i--){
         values[i]=values[i-1];
     }
-    values[index+1]={question:'',type:1, options:[{option:'option1'}],required:false}
+    values[index+1]={question:'',type:1, options:[{option:'option1'}],required:false,answer:''}
     setQuestion(values);
   }
   const toggleRequired= (index)=>{

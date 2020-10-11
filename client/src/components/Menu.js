@@ -46,7 +46,7 @@ const Menu = (props) => {
   }
   return (
     <div>
-      <Navbar color="dark" dark expand="md">
+      <Navbar color="dark" dark  expand="md">
         <NavbarBrand href="/">Forms</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>

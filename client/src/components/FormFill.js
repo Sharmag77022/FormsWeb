@@ -47,6 +47,20 @@ const FormFill =(props)=>{
             
         })
     },[])
+    const handleAnswer = (key,event,type)=>{
+        //////////////////
+        //  const values={...form,answer:[...form.questions]};
+        
+        // values.answer[key].answer=event.target.value;
+        // console.log(values);
+        /////////////
+        //const newD= {answer:values}
+       // const newData={...form,...newD}
+        //console.log(newData);
+        const values={...form};
+        type===1?values.questions[key].answer=event.target.value:values.questions[key].answer=parseInt(event.target.value)
+        setForm(values);
+    }
     const classes = useStyles();
     return(
         <>
@@ -78,10 +92,18 @@ const FormFill =(props)=>{
                 label="Your Answer"
                 fullWidth
                 margin="normal"
+                value={question.answer}
+                onChange={(event)=>handleAnswer(index,event,1)}
                 // {question.required?'required':null}
-                />:<RadioGroup aria-label="Options" name="options" value={1} >
+                />:<RadioGroup aria-label="Options"
+                 name="options"
+                 onChange={(event)=>handleAnswer(index,event,2)}
+                  value={question.answer} >
                     {question.options.map((option,ind)=>(
-                        <FormControlLabel value={ind} control={<Radio />} label={option.option} key={ind} />
+                        <FormControlLabel value={ind}
+                         control={<Radio />} 
+                         label={option.option} 
+                         key={ind} />
                     ))}
                  </RadioGroup>}   
             </CardContent>  
