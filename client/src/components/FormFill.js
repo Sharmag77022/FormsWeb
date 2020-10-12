@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Icon from '@material-ui/core/Icon';
 const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 275,
@@ -30,11 +31,14 @@ const useStyles = makeStyles((theme) => ({
      },
      question:{
          color: 'green'
-     }
+     },
+    button: {
+        margin: theme.spacing(1),
+    }
   }));
 
 const FormFill =(props)=>{
-    const [form,setForm]=useState({});
+    const [form,setForm]=useState(false);
     useEffect(()=>{
         fetch('/form?fId='+props.match.params.fId).then(res=>{
             res.json().then(data=>{
@@ -67,7 +71,7 @@ const FormFill =(props)=>{
         <br/>
         <div className={classes.gridRoot}>
             <Grid container spacing={3} justify="center" direction='row'>
-            {form.title?<><Grid item xs={10} lg={6} className={classes.gridItem}  >  
+            {form?<><Grid item xs={10} lg={6} className={classes.gridItem}  >  
                 <Card className={classes.root} style={{boxShadow:'5px 5px 5px #888888'}}>
                 <CardContent>
                     <Typography component={'span'} className={classes.title} color="primary" align='center' gutterBottom>
@@ -94,11 +98,11 @@ const FormFill =(props)=>{
                 margin="normal"
                 value={question.answer}
                 onChange={(event)=>handleAnswer(index,event,1)}
-                // {question.required?'required':null}
+                required={question.required?true:false}
                 />:<RadioGroup aria-label="Options"
                  name="options"
                  onChange={(event)=>handleAnswer(index,event,2)}
-                  value={question.answer} >
+                  value={question.required?question.answer||0:question.answer} >
                     {question.options.map((option,ind)=>(
                         <FormControlLabel value={ind}
                          control={<Radio />} 
@@ -113,6 +117,18 @@ const FormFill =(props)=>{
             :null}    
             
             </Grid>
+            {!form?null:
+            <Box display='flex' mb={5} justifyContent='center'>
+            <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            endIcon={<Icon>send</Icon>}>
+            Submit
+            </Button>
+            </Box>
+            }
+            
         </div>    
         </>
     );
