@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
 
 const FormFill =(props)=>{
     const [form,setForm]=useState(false);
+    const [errors,setErrors]=useState(false);
+    const [email,setEmail]= useState('');
+    const [emailError,setEmailError]=useState(false);
     useEffect(()=>{
         fetch('/form?fId='+props.match.params.fId).then(res=>{
             res.json().then(data=>{
@@ -51,16 +54,28 @@ const FormFill =(props)=>{
             
         })
     },[])
+    const changeEmail=(event)=>{
+        setEmail(event.target.value);
+    }
+    const handleSubmit = async()=>{
+        const a=[];
+        form.questions.map((question,index)=>{     
+            if(question.answer===''){
+                a[index]=true;    
+            }else{
+                a[index]=false;
+            }
+        })
+        setErrors(a);
+        if(email===''){
+            setEmailError('Email address cannot be empty!')
+        }else if(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(email)===false){
+            setEmailError('Please enter a valid email address!')
+        }else {
+            setEmailError(false);
+        }
+    }
     const handleAnswer = (key,event,type)=>{
-        //////////////////
-        //  const values={...form,answer:[...form.questions]};
-        
-        // values.answer[key].answer=event.target.value;
-        // console.log(values);
-        /////////////
-        //const newD= {answer:values}
-       // const newData={...form,...newD}
-        //console.log(newData);
         const values={...form};
         type===1?values.questions[key].answer=event.target.value:values.questions[key].answer=parseInt(event.target.value)
         setForm(values);
@@ -94,6 +109,8 @@ const FormFill =(props)=>{
                 {question.type==1?
                 <TextField
                 label="Your Answer"
+                error={!question.required?false:errors?errors[index]:false}
+                helperText={!question.required?'':!errors?null:errors[index]?"Cannot leave empty!":null}
                 fullWidth
                 margin="normal"
                 value={question.answer}
@@ -109,19 +126,44 @@ const FormFill =(props)=>{
                          label={option.option} 
                          key={ind} />
                     ))}
-                 </RadioGroup>}   
+                 </RadioGroup>}  
             </CardContent>  
             </Card>
             </Grid>
             ))}</>
-            :null}    
-            
+            :null} 
+            {/* Email Section */}
+            {!form?null:
+            <Grid item xs={10} lg={6} className={classes.gridItem}  >  
+                <Card className={classes.root} style={{boxShadow:'5px 5px 5px #888888'}}>
+                <CardHeader
+                    title='Enter Your Email Address ?'
+                    className={classes.question}
+                    align='center'
+                />
+                <CardContent> 
+                    <TextField
+                    label="Your Email"
+                    fullWidth
+                    error={emailError?true:false}
+                    helperText={emailError?emailError:null}
+                    value={email}
+                    onChange={changeEmail}
+                    margin="normal"
+                    required={true}
+                    /> 
+                </CardContent>  
+                </Card>
             </Grid>
+            }
+            </Grid>
+            {/* Submit Section */}  
             {!form?null:
             <Box display='flex' mb={5} justifyContent='center'>
             <Button
             variant="contained"
             color="primary"
+            onClick={handleSubmit}
             className={classes.button}
             endIcon={<Icon>send</Icon>}>
             Submit
