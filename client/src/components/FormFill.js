@@ -2,7 +2,6 @@ import React , { useEffect, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: 12,
     },
     gridRoot: {
-        flexGrow: 1,
+        flexGrow: 1
       },
     gridItem:{
       margin: theme.spacing(5)
@@ -42,6 +41,7 @@ const FormFill =(props)=>{
     const [errors,setErrors]=useState(false);
     const [email,setEmail]= useState('');
     const [emailError,setEmailError]=useState(false);
+  // const [validation,setValidation]=useState(0);
     useEffect(()=>{
         fetch('/form?fId='+props.match.params.fId).then(res=>{
             res.json().then(data=>{
@@ -50,20 +50,47 @@ const FormFill =(props)=>{
             }).catch(err=>{
                 console.log('There is some Error');
             })
-        }).catch(err=>{
-            
+        }).catch(err=>{   
         })
     },[])
     const changeEmail=(event)=>{
         setEmail(event.target.value);
     }
-    const handleSubmit = async()=>{
+    const submitForm = ()=>{
+        fetch('/form/response',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                email:email,
+                form:form
+            })
+        })
+    }
+    const handleSubmit = ()=>{
+        ////Validation of Inputs
         const a=[];
+        let b=0;
+        
         form.questions.map((question,index)=>{     
             if(question.answer===''){
-                a[index]=true;    
+                if(question.required){
+                    if(question.type===2){
+                        let values={...form};
+                        values.questions[index].answer=0;
+                        a[index]=false;
+                        b=b+1;
+                    }else{
+                        a[index]=true;
+                    }    
+                }else{
+                    a[index]=false;
+                    b=b+1;
+                }      
             }else{
                 a[index]=false;
+                b=b+1
             }
         })
         setErrors(a);
@@ -72,8 +99,14 @@ const FormFill =(props)=>{
         }else if(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(email)===false){
             setEmailError('Please enter a valid email address!')
         }else {
+            b=b+1;
             setEmailError(false);
         }
+    ////Submission of Form    
+        if(b===form.questions.length+1){
+            submitForm();
+        }
+        
     }
     const handleAnswer = (key,event,type)=>{
         const values={...form};
@@ -106,7 +139,7 @@ const FormFill =(props)=>{
             align='center'
             />
             <CardContent>
-                {question.type==1?
+                {question.type===1?
                 <TextField
                 label="Your Answer"
                 error={!question.required?false:errors?errors[index]:false}
