@@ -13,6 +13,8 @@ router.get('/',async(req,res)=>{
 router.post('/response',async (req,res)=>{
    const data= await responseSchema.find({formId:req.body.form._id ,email:req.body.email}).then(data=>{
     if(data.length>0){
+        console.log('already submitted')
+        res.status(401).json({msg:'Form is already submitted'});
        return data; 
     }else{
         return false;
@@ -20,7 +22,7 @@ router.post('/response',async (req,res)=>{
    }).catch(err=>{
        console.log(err);
        return false;
-   })
+   }) 
   if(!data){
     const newResponse = new responseSchema({formId:req.body.form._id,email:req.body.email,responses:req.body.form.questions});
     newResponse.save((err,response)=>{

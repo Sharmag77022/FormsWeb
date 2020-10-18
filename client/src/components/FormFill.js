@@ -12,6 +12,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Icon from '@material-ui/core/Icon';
+import { toast } from 'react-toastify';
 const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 275,
@@ -41,12 +42,11 @@ const FormFill =(props)=>{
     const [errors,setErrors]=useState(false);
     const [email,setEmail]= useState('');
     const [emailError,setEmailError]=useState(false);
-  // const [validation,setValidation]=useState(0);
     useEffect(()=>{
         fetch('/form?fId='+props.match.params.fId).then(res=>{
             res.json().then(data=>{
                 setForm(data);
-                console.log(data);
+               // console.log(data);
             }).catch(err=>{
                 console.log('There is some Error');
             })
@@ -65,6 +65,30 @@ const FormFill =(props)=>{
             body:JSON.stringify({
                 email:email,
                 form:form
+            })
+        }).then(res=>{
+            res.json().then(data=>{
+                if(res.status===200){
+                    toast.success(data.msg, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        }); 
+                }else{
+                    toast.error(data.msg, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        })
+                }
             })
         })
     }
