@@ -46,7 +46,6 @@ const FormFill =(props)=>{
         fetch('/form?fId='+props.match.params.fId).then(res=>{
             res.json().then(data=>{
                 setForm(data);
-               // console.log(data);
             }).catch(err=>{
                 console.log('There is some Error');
             })
@@ -56,7 +55,16 @@ const FormFill =(props)=>{
     const changeEmail=(event)=>{
         setEmail(event.target.value);
     }
+    const emptyAnswers=()=>{
+        const values={...form};
+        values.questions.map((question,index)=>{
+            values.questions[index].answer='';
+        })
+        setForm(values);
+        setEmail('');
+    }
     const submitForm = ()=>{
+        
         fetch('/form/response',{
             method:'POST',
             headers:{
@@ -69,6 +77,7 @@ const FormFill =(props)=>{
         }).then(res=>{
             res.json().then(data=>{
                 if(res.status===200){
+                    emptyAnswers();
                     toast.success(data.msg, {
                         position: "top-right",
                         autoClose: 3000,
