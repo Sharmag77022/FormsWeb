@@ -24,6 +24,7 @@ import Icon from '@material-ui/core/Icon';
 import ToggleOffIcon from '@material-ui/icons/ToggleOff';
 import ToggleOnIcon from '@material-ui/icons/ToggleOn';
 import { toast } from 'react-toastify';
+import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -49,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateF = ()=>{
   const [title,setTitle]= useState('Untitled Form');
+  const [submission,setSubmission]= useState(false);
   const newTitle = (event)=>{
     setTitle(event.target.value);
   }
@@ -147,6 +149,7 @@ const CreateF = ()=>{
       }
 
       if(flag){
+        setSubmission(true);
         fetch('/user/createForm',{
           credentials: "same-origin",
           method: 'POST',
@@ -157,8 +160,17 @@ const CreateF = ()=>{
           questions:questions
           })
       }).then((res)=>{
+        setSubmission(false);
         res.json().then(data=>{
           if(res.status===200){
+            setQuestion([
+              {question:'',
+                type:1,
+                options:[{option:'option1'}],
+                required:false,
+                answer:''
+              }
+            ]);
             toast.success(data.msg, {
                 position: "top-right",
                 autoClose: 3000,
@@ -180,6 +192,7 @@ const CreateF = ()=>{
                 })
         }
         }).catch((err)=>{
+          setSubmission(false);
           console.log(err);
       })
       })
@@ -324,7 +337,9 @@ const CreateF = ()=>{
         color="primary"
         onClick={create}
         className={classes.button}
-        endIcon={<Icon>send</Icon>}>
+        disabled={submission}
+        endIcon={submission?<CircularProgress size={16}/>:<Icon>send</Icon>}
+        >
           Create
         </Button>
       </Box>

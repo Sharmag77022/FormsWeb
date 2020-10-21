@@ -7,6 +7,7 @@ import { onLogout } from '../App';
 const Login = (props) => {
     const [login,setLogin]= useState(props.status);
     const [input,setInput] = useState({email:'',password:''});
+    const [submission,setSubmission]= useState(false);
     const history = useHistory();
     const changeLoginStatus = useContext(onLogout);
     const [SignUpInput,setSignUpInput]= useState({name:'',email:'',password:''});
@@ -16,11 +17,10 @@ const Login = (props) => {
     
     const userLogin= async(event)=>{
         event.preventDefault();
+        setSubmission(true)
         var formData = new FormData();
         await formData.append("email", input.email);
         await formData.append("password", input.password);
-        
-        
         fetch('/user/login',{
             credentials: "same-origin",
             method: 'POST',
@@ -29,6 +29,7 @@ const Login = (props) => {
             // },
             body:formData
         }).then((res)=>{
+            setSubmission(false);
             res.json().then(data=>{
                 if(res.status===200){
                     changeLoginStatus();
@@ -56,10 +57,12 @@ const Login = (props) => {
                 }
             })
         }).catch((err)=>{
+            setSubmission(false);
             console.log(err);
         })
     }
     const newRegistration =async (event)=>{
+        setSubmission(true);
         event.preventDefault();
         var formData = new FormData();
         await formData.append("name", SignUpInput.name);
@@ -75,6 +78,7 @@ const Login = (props) => {
             // },
             body:formData
         }).then((res)=>{
+            setSubmission(false);
             res.json().then(data=>{
                 if(res.status===200){
                     toast.success(data.msg, {
@@ -100,6 +104,7 @@ const Login = (props) => {
                 }
             })
         }).catch((err)=>{
+            setSubmission(false);
             console.log(err);
         })
     }
@@ -125,6 +130,7 @@ const Login = (props) => {
         
         <br/><br/><br/><br/>
         <div className="row ">
+        
         <form className=" col-10 col-sm-6 p-4 mx-auto border">
             <div className="form-group">
                 <label htmlFor="email">Email address</label>
@@ -135,7 +141,13 @@ const Login = (props) => {
                 <input name="password" onChange={newInput} value={input.password} type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
             </div>
            
-            <button type="submit" onClick={userLogin} className="btn btn-primary">LogIn</button>
+            <button 
+            type="submit" 
+            disabled={submission} 
+            onClick={userLogin} 
+            className="btn btn-primary">
+                {submission?<>LogIn &nbsp;<div class="spinner-border text-light spinner-border-sm" ></div></>:'LogIn'}
+            </button>
             </form>
             
             <br/>
@@ -157,7 +169,12 @@ const Login = (props) => {
                 <input name="password" onChange={newSignUpInput} value={SignUpInput.password} type="password" className="form-control"  placeholder="Password"/>
             </div>
            
-            <button type="submit" className="btn btn-primary" onClick={newRegistration}>SignUp</button>
+            <button type="submit" 
+            className="btn btn-primary" 
+            onClick={newRegistration}
+            disabled={submission}
+            >{submission?<>SignUp &nbsp;<div class="spinner-border text-light spinner-border-sm" ></div></>:'SignUp'}
+            </button>
             </form>
             <br/>
             <span className="text-danger text-center col-12 mt-5">Already have an Account&nbsp;<button onClick={loginToggle} className="btn btn-success">Login Here</button></span>

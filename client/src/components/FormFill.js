@@ -12,6 +12,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Icon from '@material-ui/core/Icon';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { toast } from 'react-toastify';
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -42,6 +43,7 @@ const FormFill =(props)=>{
     const [errors,setErrors]=useState(false);
     const [email,setEmail]= useState('');
     const [emailError,setEmailError]=useState(false);
+    const [submission,setSubmission]= useState(false);
     useEffect(()=>{
         fetch('/form?fId='+props.match.params.fId).then(res=>{
             res.json().then(data=>{
@@ -64,7 +66,7 @@ const FormFill =(props)=>{
         setEmail('');
     }
     const submitForm = ()=>{
-        
+        setSubmission(true);    
         fetch('/form/response',{
             method:'POST',
             headers:{
@@ -76,6 +78,7 @@ const FormFill =(props)=>{
             })
         }).then(res=>{
             res.json().then(data=>{
+                setSubmission(false);
                 if(res.status===200){
                     emptyAnswers();
                     toast.success(data.msg, {
@@ -197,7 +200,7 @@ const FormFill =(props)=>{
             </Card>
             </Grid>
             ))}</>
-            :null} 
+            :<CircularProgress  className={classes.gridItem}/>} 
             {/* Email Section */}
             {!form?null:
             <Grid item xs={10} lg={6} className={classes.gridItem}  >  
@@ -231,8 +234,9 @@ const FormFill =(props)=>{
             color="primary"
             onClick={handleSubmit}
             className={classes.button}
-            endIcon={<Icon>send</Icon>}>
-            Submit
+            endIcon={submission?<CircularProgress size={16}/>:<Icon>send</Icon>}
+            disabled={submission}>
+                Submit
             </Button>
             </Box>
             }
